@@ -46,7 +46,3 @@ func PushMisconfigurationError(accessed_resource string, config_error ConfigErro
 
 	return out, err
 }
-
-func main() {
-	PushMisconfigurationError("Something", "Something")
-}
