@@ -1,8 +1,9 @@
 package cloudwatchlogger
 
 import (
-	"cloudwatch-logger/cloudwatch_logger/base"
 	"os"
+
+	"github.com/keyglee/cloudwatch-logger-go/cloudwatch_logger/base"
 
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 )
