@@ -4,13 +4,15 @@ import (
 	"os"
 
 	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/base"
+	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/errors"
+	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/metrics"
 
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 )
 
-func LogMetric(metric_name string, namespace string, accessed_resource string, config_error ConfigError) (*cloudwatch.PutMetricDataOutput, error) {
+func LogMetric(metric_name metrics.Metrics, namespace string, accessed_resource string, config_error errors.ConfigError) (*cloudwatch.PutMetricDataOutput, error) {
 
-	client := base.CloudwatchMetric{MetricName: metric_name, Namespace: namespace}
+	client := base.CloudwatchMetric{MetricName: string(metric_name), Namespace: namespace}
 
 	var dimensions []*cloudwatch.Dimension
 
