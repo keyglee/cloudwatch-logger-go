@@ -1,4 +1,4 @@
-package base
+package errors
 
 type ConfigError string
 

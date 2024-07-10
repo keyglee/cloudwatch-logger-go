@@ -1,4 +1,4 @@
-package main
+package cloudwatchlogger
 
 import (
 	"os"
@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 )
 
-func LogMetric(metric_name string, namespace string, accessed_resource string, config_error base.ConfigError) (*cloudwatch.PutMetricDataOutput, error) {
+func LogMetric(metric_name string, namespace string, accessed_resource string, config_error ConfigError) (*cloudwatch.PutMetricDataOutput, error) {
 
 	client := base.CloudwatchMetric{MetricName: metric_name, Namespace: namespace}
 
