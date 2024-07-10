@@ -1,20 +1,20 @@
-package cloudwatchlogger
+package main
 
 import (
 	"os"
 
-	"github.com/keyglee/cloudwatch-logger-go/cloudwatch_logger/base"
+	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/base"
 
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
 )
 
-func PushAuthorizedAcess(accessed_resource string) (*cloudwatch.PutMetricDataOutput, error) {
-	const METRIC_NAME = "AuthorizedAccessException"
+func LogMetric(metric_name string, namespace string, accessed_resource string, config_error base.ConfigError) (*cloudwatch.PutMetricDataOutput, error) {
 
-	client := base.CloudwatchMetric{MetricName: METRIC_NAME, Namespace: "General"}
+	client := base.CloudwatchMetric{MetricName: metric_name, Namespace: namespace}
 
 	var dimensions []*cloudwatch.Dimension
 
+	dimensions = append(dimensions, base.CreateDimension("Error", string(config_error)))
 	dimensions = append(dimensions, base.CreateDimension("Service", os.Getenv("SERVICE_NAME")))
 	dimensions = append(dimensions, base.CreateDimension("Resource", accessed_resource))
 	dimensions = append(dimensions, base.CreateDimension("FunctionName", os.Getenv("AWS_LAMBDA_FUNCTION_NAME")))
