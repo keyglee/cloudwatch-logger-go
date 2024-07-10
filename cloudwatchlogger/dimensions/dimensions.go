@@ -1,4 +1,4 @@
-package base
+package dimensions
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
