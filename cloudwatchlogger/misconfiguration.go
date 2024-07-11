@@ -32,8 +32,11 @@ func LogMetric(metric_name metrics.Metrics, namespace string, accessed_resource 
 
 	dimensionList = append(dimensionList, dimensions.CreateDimension("Error", string(config_error)))
 	dimensionList = append(dimensionList, dimensions.CreateDimension("Resource", accessed_resource))
+
+	// AWS Reserved environment variables
 	dimensionList = append(dimensionList, dimensions.CreateDimension("FunctionName", os.Getenv("AWS_LAMBDA_FUNCTION_NAME")))
-	dimensionList = append(dimensionList, dimensions.CreateDimension("STAGE", os.Getenv("STAGE")))
+	dimensionList = append(dimensionList, dimensions.CreateDimension("AWS_LAMBDA_LOG_GROUP_NAME", os.Getenv("AWS_LAMBDA_LOG_GROUP_NAME")))
+	dimensionList = append(dimensionList, dimensions.CreateDimension("AWS_LAMBDA_LOG_STREAM_NAME", os.Getenv("AWS_LAMBDA_LOG_STREAM_NAME")))
 
 	dimensionList = append(dimensionList, extra_dimensions...)
 
