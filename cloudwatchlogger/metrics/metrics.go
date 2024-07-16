@@ -3,7 +3,9 @@ package metrics
 type Metrics string
 
 const (
-	Misconfiguration       Metrics = "MisconfigurationError"
-	UndefinedConfiguration Metrics = "MissingConfigurationError"
-	Unauthorized           Metrics = "UnauthorizedError"
+	Misconfiguration       Metrics = "Misconfiguration"
+	UndefinedConfiguration Metrics = "MissingConfiguration"
+	Unauthorized           Metrics = "Unauthorized"
+	Network                Metrics = "Network"
+	Billing                Metrics = "Billing"
 )
