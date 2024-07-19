@@ -5,7 +5,6 @@ import (
 
 	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/base"
 	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/dimensions"
-	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/errors"
 	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/metrics"
 	"github.com/keyglee/cloudwatch-logger-go/cloudwatchlogger/namespaces"
 
@@ -25,23 +24,24 @@ import (
 // @param extra_dimensions - Extra dimensions to be added to the metric being logged
 //
 // returns - cloudwatch.PutMetricDataOutput, error
-func LogMetric(metric_name metrics.Metrics, namespace namespaces.Namespace, accessed_resource string, config_error errors.ConfigError, extra_dimensions []*cloudwatch.Dimension) (*cloudwatch.PutMetricDataOutput, error) {
+func LogMetric(metric_name metrics.Metrics, namespace namespaces.Namespace, extra_dimensions []*cloudwatch.Dimension) (*cloudwatch.PutMetricDataOutput, error) {
 
 	client := base.CloudwatchMetric{MetricName: string(metric_name), Namespace: string(namespace)}
 
-	var dimensionList []*cloudwatch.Dimension
-
-	dimensionList = append(dimensionList, dimensions.CreateDimension("Error", string(config_error)))
-	dimensionList = append(dimensionList, dimensions.CreateDimension("Resource", accessed_resource))
-
 	// AWS Reserved environment variables
-	dimensionList = append(dimensionList, dimensions.CreateDimension("AWS_LAMBDA_FUNCTION_NAME", os.Getenv("AWS_LAMBDA_FUNCTION_NAME")))
-	dimensionList = append(dimensionList, dimensions.CreateDimension("AWS_LAMBDA_LOG_GROUP_NAME", os.Getenv("AWS_LAMBDA_LOG_GROUP_NAME")))
-	dimensionList = append(dimensionList, dimensions.CreateDimension("AWS_LAMBDA_LOG_STREAM_NAME", os.Getenv("AWS_LAMBDA_LOG_STREAM_NAME")))
 
-	dimensionList = append(dimensionList, extra_dimensions...)
-
-	out, err := client.PutMetric(dimensionList)
+	out, err := client.PutMetric(extra_dimensions)
 
 	return out, err
+}
+
+func AddFunctionName(dimensionsList []*cloudwatch.Dimension) []*cloudwatch.Dimension {
+	returnDimensions := dimensionsList
+	if dimensionsList == nil {
+		returnDimensions = []*cloudwatch.Dimension{}
+	}
+
+	returnDimensions = append(returnDimensions, dimensions.CreateDimension("FunctionName", os.Getenv("AWS_LAMBDA_FUNCTION_NAME")))
+
+	return returnDimensions
 }
